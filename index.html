@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Global COVID-19 Cases</title>
+        <meta charset="utf-8"/>
+        <style>
+            html, body {
+                font-size: 20px; 
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                background: #00b2b2;
+            }
+            h1, h2 {
+                background: #020129;
+                color: #ffffff;
+            }
+        </style>
+        <script>
+            // Declare JSON object to be retreived
+            var request;
+            function getData()
+            {
+                // Create instance of request object
+                request = new XMLHttpRequest();
+                // Set URL for the AJAX request
+                request.open("GET","https://api.covid19api.com/summary",true);
+                // Set up event handler
+                request.onreadystatechange = function()
+                {
+                    // Successful data retreival
+                    if (request.readyState == 4 && request.status == 200) {
+                        jsonText = request.responseText;    // JSON string
+                        allCases = JSON.parse(jsonText);    // JSON object
+                        // String to be displayed
+                        str = "";
+                        str += "<b>New Cases: </b>" + allCases.Global.NewConfirmed + " <br>";
+                        str += "<b>Total Cases: </b>" + allCases.Global.TotalConfirmed + " <br>";
+                        str += "<b>New Deaths: </b>" + allCases.Global.NewDeaths + " <br>";
+                        str += "<b>Total Deaths: </b>" + allCases.Global.TotalDeaths + " <br>";
+                        str += "<b>New Recoveries: </b>" + allCases.Global.NewRecovered + " <br>";
+                        str += "<b>Total Recoveries: </b>" + allCases.Global.TotalRecovered + " <br>";
+                        // Display by overwriting
+                        document.getElementById("global").innerHTML = str;
+                    }
+                    else {
+                        document.getElementById("global").innerHTML = 
+                        "Oops! Something went wrong. <br>";
+                    }
+                }
+                // Send request
+                request.send();
+            }
+        </script>
+    </head>
+    <body onload="getData()">
+        <h1>Daily Summary on COVID-19</h1>
+        <h1>Global Cases</h1>
+        <div id="global">
+            <!-- 1. This displays the information gotten from the API -->
+            <b>New Cases: </b> <br>
+            <b>Total Cases: </b> <br>
+            <b>New Deaths: </b> <br>
+            <b>Total Deaths: </b> <br>
+            <b>New Recoveries: </b> <br>
+            <b>Total Recoveries: </b> <br>
+        </div>
+        <h2>Information about this page</h2>
+        <div id="info">
+            <p>
+                <b>Description:</b> This API allows its users access data on COVID-19. It
+                gets its data from <a href="https://github.com/CSSEGISandData/COVID-19" target="_blank">
+                Johns Hopkins CSSE</a> <br>
+                <b>API site:</b> <a href="https://covid19api.com/" target="_blank">
+                A free API for data on the Coronavirus</a> <br>
+                <b>Options used:</b> I used the "GET" option to retreive data from the server at the specified resource. <br>
+                <b>Useful applications: </b> For health-related organizations or even personal use. <br>
+            </p>
+        </div>
+    </body>
+</html>
